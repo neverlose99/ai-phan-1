@@ -15,21 +15,25 @@ Trả về code PHP có thể tích hợp vào Laravel, kèm giải thích và c
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 public function login(Request $request)
 {
     $credentials = $request->validate([
         'username' => ['required', 'string'],
         'password' => ['required', 'string'],
     ]);
+
     $account = \App\Models\Account::where(
         'username',
         $credentials['username']
     )->first();
+
     if (!$account || $account->status !== 'active') {
         return back()->withErrors([
             'username' => 'Thông tin đăng nhập không hợp lệ.',
         ]);
     }
+
     if (!\Illuminate\Support\Facades\Hash::check(
         $credentials['password'],
         $account->password
@@ -49,7 +53,6 @@ public function login(Request $request)
 
 **Format** Cung cấp code trước và sau khi tối ưu, giải thích sự khác biệt, kèm 3 bước kiểm tra. Không sử dụng dữ liệu thật của người dùng.
 **Kết quả**
-
 Trước khi tối ưu:
 $accounts = Account::all();
 
